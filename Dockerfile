@@ -17,13 +17,22 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 575159689BEFB442 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# Preinstall GHC using Stack
+ENV STACK_LTS_VERSION 5.5
+RUN stack setup --resolver lts-$STACK_LTS_VERSION
+
+# Install application framework in a separate layer for caching
+ONBUILD COPY ./stack-bootstrap .
+ONBUILD RUN stack install \
+  --resolver lts-$STACK_LTS_VERSION \
+  $(cat stack-bootstrap)
+
 # Copy over configuration for building the app
-ONBUILD COPY *.cabal .
 ONBUILD COPY stack.yaml .
+ONBUILD COPY *.cabal .
 
 # Build dependencies so that if we change something later we'll have a Docker
 # cache of up to this point.
-ONBUILD RUN stack setup
 ONBUILD RUN stack build --dependencies-only
 
 ONBUILD COPY . /app/user

@@ -10,6 +10,22 @@ Create your own `Dockerfile` inheriting from this image:
 FROM thoughtbot/heroku-haskell-stack
 ```
 
+Create a `stack-bootstrap` file containing large dependencies for your
+application. For example:
+
+```
+alex classy-prelude-yesod happy yesod-bin yesod
+```
+
+These dependencies will be installed in their own Docker layer, so changing your
+cabal file will not cause them to be reinstalled every time.
+
+Build your image:
+
+```
+docker build .
+```
+
 Here's a sample `bin/deploy` script you can use in your Heroku project, assuming
 you already have the heroku-docker Heroku plugin installed:
 
