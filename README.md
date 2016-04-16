@@ -34,12 +34,12 @@ you already have the heroku-docker Heroku plugin installed:
 
 set -e
 
-if (( $# != 1 )); then
+if [ $# -ne 1 ]; then
   echo "Usage: ./bin/deploy (staging|production)"
   exit 1
 fi
 
-if [ $(uname) == "Darwin" ]; then
+if [ $(uname) = "Darwin" ]; then
   eval "$(docker-machine env default)"
 fi
 
