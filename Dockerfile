@@ -37,6 +37,9 @@ ONBUILD RUN stack build --dependencies-only
 
 ONBUILD COPY . /app/user
 
+# Run pre-build script if it exists (compile CSS, etc)
+ONBUILD RUN if [ -x bin/pre-build ]; then bin/pre-build; fi
+
 # Build and copy the executables into the app
 ONBUILD RUN stack --local-bin-path=. install
 
