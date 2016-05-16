@@ -37,11 +37,8 @@ ONBUILD RUN stack build --dependencies-only
 
 ONBUILD COPY . /app/user
 
-# Install the app's binaries
-ONBUILD RUN stack install
-
-# Copy in binaries
-ONBUILD RUN cp /root/.local/bin/* .
+# Build and copy the executables into the app
+ONBUILD RUN stack --local-bin-path=. install
 
 # Clean up
 ONBUILD RUN rm -rf /app/user/.stack-work
