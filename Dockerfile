@@ -9,6 +9,12 @@ ENV PATH /root/.local/bin:$PATH
 RUN mkdir -p /app/user
 WORKDIR /app/user
 
+# Add a /app/GIT_HEAD_REF file with the git commit SHA that is currently
+# deployed
+COPY .git .git
+RUN cat ".git/$(cut -d' ' -f2 .git/HEAD)" > /app/GIT_HEAD_REF
+RUN rm -rf .git
+
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 575159689BEFB442 \
   && echo 'deb http://download.fpcomplete.com/ubuntu trusty main' > \
     /etc/apt/sources.list.d/fpco.list \
