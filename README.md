@@ -46,3 +46,9 @@ fi
 heroku docker:release --remote "$1"
 heroku open --remote "$1"
 ```
+
+## Running a script before building
+
+Many applications need to do something before running the actual Stack
+build, such as compiling CSS. You can put commands in `bin/pre-build` and this
+Dockerfile will run them before building the application.
