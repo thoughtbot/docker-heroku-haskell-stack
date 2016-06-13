@@ -18,7 +18,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 575159689BEFB442 \
   && rm -rf /var/lib/apt/lists/*
 
 # Preinstall GHC using Stack
-ENV STACK_LTS_VERSION 6.2
+ENV STACK_LTS_VERSION 6.3
 RUN stack setup --resolver lts-$STACK_LTS_VERSION
 
 # Install application framework in a separate layer for caching
